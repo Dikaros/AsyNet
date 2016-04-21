@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
         //增加http报文头
         net.addHeader("apikey", API_KEY);
         //设置网络的监听器
-        net.setOnNetStateChangedListener(new NetChangedListener());
+//        net.setOnNetStateChangedListener(new NetChangedListener());
+
         //执行(这个只能执行一次)
         net.execute();
     }
