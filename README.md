@@ -26,22 +26,22 @@
     net.setOnNetStateChangedListener(new AsyNet.OnNetStateChangedListener<String>() {
             @Override
             public void beforeAccessNet() {
-                //网络访问前
+                //网络访问前，可以直接更新UI
             }
 
             @Override
             public void afterAccessNet(String result) {
-                //获取到结果时的回调
+                //获取到结果时的回调,可以直接更新UI
             }
 
             @Override
             public void whenException() {
-                //网络访问失败时
+                //网络访问失败时,可以直接更新UI
             }
 
             @Override
             public void onProgress(Integer progress) {
-                //访问进度
+                //访问进度,可以直接更新UI
             }
         });
     //执行(这个只能执行一次)
