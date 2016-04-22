@@ -1,6 +1,6 @@
 # AsyNet v0.3
 ####简介
-> 一个异步的Android Http工具，基于OkHttp和Asynctask
+> 一个异步的Android 网络工具，基于OkHttp和Asynctask
 
 ####功能
 * Http的基本Get和Post请求
