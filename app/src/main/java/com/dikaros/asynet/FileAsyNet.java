@@ -21,10 +21,6 @@ import java.util.HashMap;
  */
 public class FileAsyNet extends AsyNet<RandomAccessFile> {
 
-    /**
-     * 请求方法POST和get
-     */
-    AsyNet.NetMethod method;
 
     //需要下载的文件
     RandomAccessFile file;

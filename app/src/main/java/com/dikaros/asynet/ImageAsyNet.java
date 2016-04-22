@@ -2,6 +2,7 @@ package com.dikaros.asynet;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.dikaros.asynet.util.BitMapUtil;
 import com.squareup.okhttp.Call;
@@ -22,10 +23,6 @@ import java.util.HashMap;
 public class ImageAsyNet extends AsyNet<Bitmap> {
 
 
-    /**
-     * 请求方法POST和get
-     */
-    NetMethod method;
 
 
     public boolean isImageCompressed() {
@@ -100,10 +97,9 @@ public class ImageAsyNet extends AsyNet<Bitmap> {
             }
             return  bitmap;
         } catch (Exception e) {
+            e.printStackTrace();
             cancel(true);
         }
-
-
         return null;
     }
 }

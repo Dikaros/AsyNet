@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,11 +7,55 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".example.MainActivity">
 
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_url"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_language_black_24dp"
+            android:text="http://imgsrc.baidu.com/forum/w%3D580/sign=fbbced468e82b9013dadc33b438ca97e/0eec329b033b5bb5fdaae69f32d3d539b700bcae.jpg"
+            android:singleLine="true"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_get_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取图片"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_image_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="图片加载0%"
+        />
+    <ImageView
+        android:id="@+id/iv_main"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="#4ff0"
+        />
+    <Button
+        android:id="@+id/btn_get_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取数据"
+        />
     <TextView
         android:id="@+id/tvMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
-</RelativeLayout>
+</LinearLayout>
