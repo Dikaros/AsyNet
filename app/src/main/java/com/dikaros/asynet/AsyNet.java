@@ -11,6 +11,8 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,17 +26,17 @@ import java.util.concurrent.TimeUnit;
 public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
 
 
-    public enum NetMethod{
-        GET,POST
+    public enum NetMethod {
+        GET, POST
     }
 
     //参数类型
-    public enum ParamType{
-        JSON_OR_XML_FILE,KEY_VALUE_PAIR,NO_PARAM
+    public enum ParamType {
+        JSON_OR_XML_FILE, KEY_VALUE_PAIR, NO_PARAM
     }
 
     //http报文头
-    HashMap<String,String> header;
+    HashMap<String, String> header;
 
     /**
      * 请求方法POST和get
@@ -61,21 +63,21 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
     @Override
     protected void onCancelled() {
         //asynctask取消时
-        if (onNetStateChangedListener!=null){
+        if (onNetStateChangedListener != null) {
             onNetStateChangedListener.whenException();
         }
     }
 
     @Override
     protected void onPostExecute(T t) {
-        if (onNetStateChangedListener!=null){
+        if (onNetStateChangedListener != null) {
             onNetStateChangedListener.afterAccessNet(t);
         }
     }
 
     @Override
     protected void onPreExecute() {
-        if (onNetStateChangedListener!=null){
+        if (onNetStateChangedListener != null) {
             onNetStateChangedListener.beforeAccessNet();
         }
     }
@@ -83,64 +85,64 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        if (onNetStateChangedListener!=null){
-            if (values.length>1) {
+        if (onNetStateChangedListener != null) {
+            if (values.length > 1) {
                 onNetStateChangedListener.onProgress(values[0]);
             }
         }
     }
 
 
-    protected  Response accessNet() throws IOException {
+    protected Response accessNet() throws IOException {
         //响应
         Response response = null;
         //call
         Call call = null;
         //判断请求的类型是post还是get
-        switch (method){
+        switch (method) {
             case POST:
                 FormEncodingBuilder postParam = new FormEncodingBuilder();
-                switch (type){
+                switch (type) {
                     //无参数的不操作
                     case NO_PARAM:
                         break;
                     //单一参数的增加一个键值对
                     case JSON_OR_XML_FILE:
-                        postParam.add(key,jsonOrXmlFile);
+                        postParam.add(key, jsonOrXmlFile);
                         break;
                     //增加一堆键值对
                     case KEY_VALUE_PAIR:
-                        for (String pk:keyValuePair.keySet()
+                        for (String pk : keyValuePair.keySet()
                                 ) {
-                            postParam.add(pk,keyValuePair.get(pk).toString());
+                            postParam.add(pk, keyValuePair.get(pk).toString());
                         }
                         break;
                 }
                 Request.Builder postBuilder = new Request.Builder();
                 //循环添加http报文头
-                for (String headerKey:header.keySet()
+                for (String headerKey : header.keySet()
                         ) {
                     //添加报文头
-                    postBuilder.addHeader(headerKey,header.get(headerKey));
+                    postBuilder.addHeader(headerKey, header.get(headerKey));
                 }
                 //构建请求
                 Request postRequest = postBuilder.url(url).post(postParam.build()).build();
                 call = client.newCall(postRequest);
                 break;
             case GET:
-                String param="?";
-                switch (type){
+                String param = "?";
+                switch (type) {
                     case NO_PARAM:
-                        param="";
+                        param = "";
                         break;
                     case JSON_OR_XML_FILE:
-                        param+=key+"="+jsonOrXmlFile;
+                        param += key + "=" + jsonOrXmlFile;
                         break;
                     case KEY_VALUE_PAIR:
-                        for (String k:keyValuePair.keySet()
+                        for (String k : keyValuePair.keySet()
                                 ) {
                             //补充param
-                            param+=k+"="+keyValuePair.get(k).toString()+"&";
+                            param += k + "=" + keyValuePair.get(k).toString() + "&";
                         }
                         //去掉最后的&
                         if (param.endsWith("&")) {
@@ -153,13 +155,13 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
                 //创建请求的构造器并添加http报文头
                 Request.Builder getBuilder = new Request.Builder();
                 //循环添加http报文头
-                for (String headerKey:header.keySet()
+                for (String headerKey : header.keySet()
                         ) {
                     //添加报文头
-                    getBuilder.addHeader(headerKey,header.get(headerKey));
+                    getBuilder.addHeader(headerKey, header.get(headerKey));
                 }
                 //请求
-                Request request = getBuilder.url(url+param).build();
+                Request request = getBuilder.url(url + param).build();
                 call = client.newCall(request);
         }
         response = call.execute();
@@ -168,6 +170,7 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
 
     /**
      * 网络状态改变时候的监听器
+     *
      * @param <T>
      */
     public interface OnNetStateChangedListener<T> {
@@ -190,6 +193,7 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
 
         /**
          * 执行进度
+         *
          * @param progress
          */
         public void onProgress(Integer progress);
@@ -246,7 +250,7 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
     /**
      * 无参构造方法,初始化OkHttpClient
      */
-    protected AsyNet(){
+    protected AsyNet() {
         client = new OkHttpClient();
         header = new HashMap<>();
         client.setConnectTimeout(connectTimeOut, TimeUnit.SECONDS);
@@ -260,6 +264,7 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
 
     /**
      * 设置连接超时时间
+     *
      * @param connectTimeOut
      */
     public void setConnectTimeOut(long connectTimeOut) {
@@ -269,6 +274,7 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
 
     /**
      * 使用json或xml为参数的构造方法
+     *
      * @param url
      * @param key
      * @param jsonOrXmlFile
@@ -284,9 +290,10 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
 
     /**
      * 没有参数的方法
+     *
      * @param url
      */
-    protected AsyNet(String url){
+    protected AsyNet(String url) {
         this();
         this.url = url;
         type = ParamType.NO_PARAM;
@@ -294,26 +301,28 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
 
     /**
      * 使用键值对的构造方法
+     *
      * @param url
      * @param keyValuePair
      */
     protected AsyNet(String url, HashMap keyValuePair) {
         this();
-        this.url  = url;
+        this.url = url;
         this.keyValuePair = keyValuePair;
-        this.key =null;
+        this.key = null;
         type = ParamType.KEY_VALUE_PAIR;
     }
 
     /**
      * 执行
      */
-    public void execute(){
-        this.execute(new String[]{});
+    public void execute() {
+        //执行方法,设置同时执行的线程数量为5
+        this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,new String[]{});
     }
 
-    public void addHeader(String key,String value){
-        header.put(key,value);
+    public void addHeader(String key, String value) {
+        header.put(key, value);
 
     }
 }
