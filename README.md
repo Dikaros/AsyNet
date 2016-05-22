@@ -10,10 +10,9 @@
 * 可以直接在监听器中更新UI
 
 ####基本用法
-
+```java
 	public static final String API_KEY = "db642b2fac4fafe26849179ad8883592";
     public static final String PATH = "http://apis.baidu.com/apistore/idservice/id";
----
 
 	//创建键值对
 	HashMap<String, String> keyValuePair = new HashMap<>();
@@ -47,3 +46,4 @@
         });
     //执行(这个只能执行一次)
     net.execute();
+```
