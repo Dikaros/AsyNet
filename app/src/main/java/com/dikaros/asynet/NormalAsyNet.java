@@ -62,7 +62,12 @@ public class NormalAsyNet extends AsyNet<String> {
         try {
             Response response = accessNet();
             //这里直接用同步的方法获取响应
-            return response.body().string();
+            String result = response.body().string();
+            for (AfterNetBlock block:blocks){
+                block.doSth(result);
+            }
+
+            return result;
         } catch (Exception e) {
             cancel(true);
         }

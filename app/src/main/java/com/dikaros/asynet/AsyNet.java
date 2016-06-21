@@ -9,7 +9,9 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -324,5 +326,34 @@ public abstract class AsyNet<T> extends AsyncTask<String, Integer, T> {
     public void addHeader(String key, String value) {
         header.put(key, value);
 
+    }
+
+    List<AfterNetBlock> blocks=new ArrayList<>();
+
+    /**
+     * 增加块
+     * @param block
+     */
+    public void addBlock(AfterNetBlock... block){
+        if (block.length!=0){
+            for (int i=0;i<block.length;i++){
+                if (block[i]!=null) {
+                    blocks.add(block[i]);
+                }
+            }
+        }
+    }
+
+    /**
+     * 执行块
+     * 这个会放到doInbackground中在访问网络后执行
+     * 进行json的解析可以放到这里
+     */
+    public interface AfterNetBlock{
+        /**
+         * 执行一些事情
+         * @param o
+         */
+        public void doSth(Object o);
     }
 }
