@@ -9,6 +9,27 @@
 * 异步的文件下载以及进度查询
 * 可以直接在监听器中更新UI
 
+#### 调用方法
+> 第一步，在build.gradle添加
+
+```
+allprojects {
+		repositories {
+			...
+			maven { url "https://www.jitpack.io" }
+		}
+	}
+```
+
+> 第二步，增加依赖
+
+```
+dependencies {
+	        compile 'com.github.Dikaros:AsyNet:v0.4'
+	}
+```
+
+
 ####基本用法
 ```java
 	public static final String API_KEY = "db642b2fac4fafe26849179ad8883592";
@@ -49,3 +70,11 @@
 ```
 
 > 增加了Block,可以将json解析放到doinbackground中
+
+```java
+	net.addBlock(new AfterNetBlock(){
+		public void doSth(Object o){
+			//在这里执行耗时操作，这里主要是做一些解析工作，不能更新ui
+		}
+	});
+```
