@@ -1,4 +1,4 @@
-# AsyNet v0.3
+# AsyNet v0.4
 ####简介
 > 一个异步的Android 网络工具，基于OkHttp和Asynctask
 
@@ -47,3 +47,5 @@
     //执行(这个只能执行一次)
     net.execute();
 ```
+
+> 增加了Block,可以将json解析放到doinbackground中
